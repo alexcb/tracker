@@ -84,7 +84,7 @@ private:
 	//MyPanel *m_panel;
 	//
 	
-	int _minutes_inactive;
+	time_t _went_idle_at_time;
 	std::string _current_task;
 	time_t _current_task_start_time;
 
@@ -129,11 +129,12 @@ MyFrame *frame;
 
 void MyFrame::ShowTimeLogger()
 {
-	//Hide();
-
 	std::ostringstream oss;
-	if( _minutes_inactive > 0 ) {
-		oss << "What were you doing while idle (" << _minutes_inactive << " minutes)";
+	if( _went_idle_at_time ) {
+		time_t now = time(NULL);
+		time_t seconds_idle = now - _went_idle_at_time;
+		wxTimeSpan ts( 0, 0, seconds_idle, 0 );
+		oss << "What were you doing while idle (" << ts.Format("%H hours %M Minutes %S seconds") << ")";
 	} else {
 		oss << "What are you doing?";
 	}
@@ -255,7 +256,7 @@ bool MyApp::OnInit()
 // frame constructor
 MyFrame::MyFrame(const wxString& title, const wxPoint& pos, const wxSize& size)
 	: wxFrame((wxFrame *)NULL, wxID_ANY, title, pos, size)
-	  , _minutes_inactive( 0 )
+	  , _went_idle_at_time( 0 )
 {
 	const wxSizerFlags flags = wxSizerFlags().Centre().Border();
 
@@ -312,23 +313,27 @@ void MyFrame::SetLabelString(const char *str)
 void MyFrame::OnTextEnter(wxCommandEvent& event)
 {
 	wxString task = _task_text_ctrl->GetValue();
-	_current_task_start_time = logTask( (const char*) task.c_str(), _minutes_inactive );
+	_current_task_start_time = logTask( (const char*) task.c_str(), _went_idle_at_time );
 	_task_text_ctrl->addItem( task );
-	_minutes_inactive = 0;
+	_went_idle_at_time = 0;
 	_current_task = task.char_str();
 	Hide();
 }
 
-void MyFrame::OnIdleStateChange( IdleDetectorEvent& event ) 
+void MyFrame::OnIdleStateChange( IdleDetectorEvent& event )
 {
 	if( event.IsIdle() ) {
 		std::cout << "user is idle" << std::endl;
+		if( _went_idle_at_time == 0 ) {
+			//dont change unless the user has filled in what happened during the first idle time (to prevent mouse bumps)
+			_went_idle_at_time = time(NULL) - event.GetIdleTime().GetSeconds().ToLong();
+		}
 	} else {
 		std::cout << "user is back" << std::endl;
-		_minutes_inactive += event.GetIdleTime().GetMinutes();
 		ShowTimeLogger();
 	}
 }
+
 
 #ifdef WIN32
 void MyFrame::OnHotKeyPress( wxKeyEvent& event )

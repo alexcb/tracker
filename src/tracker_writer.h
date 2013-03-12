@@ -3,8 +3,9 @@
 
 #include <set>
 #include <string>
+#include <time.h>
 
-time_t logTask(const char *task, int minutes_ago);
+time_t logTask(const char *task, time_t task_started_time = 0);
 
 //return a list of all the tasks in the 
 std::set< std::string > getPreviousTasks();

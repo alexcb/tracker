@@ -41,27 +41,27 @@ std::string getTrackerTaskFile()
 #endif //WIN32
 }
 
-time_t logTask(const char *task, int minutes_ago)
+time_t logTask(const char *task, time_t task_started_time)
 {
 	time_t task_started_at;
 	if( getLastTask(task_started_at).compare( task ) == 0 )
 		//dont write the task if it's the same one as the last logged task
 		return task_started_at;
 
-	time_t now = time(NULL);
-	now -= minutes_ago * 60;
-
+	if( task_started_time == 0 )
+		task_started_time = time(NULL);
+		
 	std::string tmp = getTrackerTaskFile();
 	const char *fname = tmp.c_str();
 
 	FILE *fp = fopen(fname, "a");
 	if( fp ) {
-		fprintf(fp, "%lld %s\n", (long long) now, task);
+		fprintf(fp, "%lld %s\n", (long long) task_started_time, task);
 		fclose(fp);
 	} else {
 		std::cerr << "error writing task" << std::endl;
 	}
-	return now;
+	return task_started_time;
 }
 
 std::string getLastTask( time_t &task_started_at )

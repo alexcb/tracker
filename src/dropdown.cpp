@@ -109,6 +109,7 @@ void TaskDropDown::onText(wxCommandEvent& event)
 	//search for matching strings
 	matching_items.Clear();
 	selected_item = 0;
+	displayed_page_first_item = 0;
 
 	const wxString str = GetValue();
 	const int str_len = str.Length();
