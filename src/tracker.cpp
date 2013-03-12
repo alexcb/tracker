@@ -141,6 +141,7 @@ void MyFrame::ShowTimeLogger()
 	SetLabelString( oss.str().c_str() );
 
 	_task_text_ctrl->ChangeValue( _current_task.c_str() );
+	_task_text_ctrl->SetSelection( -1, -1 );
 
 	Show(true);
 	Raise();

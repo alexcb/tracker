@@ -173,6 +173,15 @@ void TaskDropDown::onKeyDown(wxKeyEvent &event)
 			GetParent()->Hide();
 		}
 		break;
+	case WXK_TAB:
+		{
+			if( 0 <= selected_item && selected_item < matching_items.size() ) {
+				ChangeValue( matching_items[ selected_item ] );
+				SetInsertionPointEnd();
+				_popup->Hide();
+			}
+		}
+		break;
 	case WXK_UP:
 		{
 			if( selected_item > 0 ) {
