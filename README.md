@@ -36,7 +36,9 @@ Tracked time is output to the file tracker_time.txt in the same directory as the
 Linux
 -----
 
-Under linux, one must setup a hotkey through their window manager. When tracker is first run, it creates a file ~/tracker.pid. When a second instance is run, it will signal the first instance to display itself.
+Under linux, one must setup a hotkey through the window manager. When tracker is first run, it creates a file ~/tracker.pid. When a second instance is run, it will signal the first instance to display itself.
+
+Under xfce, one can add a custom keyboard shortcut under: settings -> keyboard -> application shortcuts
 
 tracked time is output to the file ~/.tracker_time
 
