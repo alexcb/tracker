@@ -118,7 +118,7 @@ void TaskDropDown::onText(wxCommandEvent& event)
 	int matches_i = 0;
 	if( str_len > 0 ) {
 		for( int i = 0; i < items.size(); i++ ) {
-			int res = items[i].compare( 0, str_len, str );
+			int res = items[i].Lower().compare( 0, str_len, str.Lower() );
 			if( res == 0 ) {
 				matching_items.Add( items[ i ] );
 			}
@@ -142,7 +142,7 @@ void TaskDropDown::onText(wxCommandEvent& event)
 	//now search for any matches (not just prefixes)
 	if( str_len > 0 ) {
 		for( int i = 0; i < items.size(); i++ ) {
-			if( items[i].Contains(str) ) {
+			if( items[i].Lower().Contains(str.Lower()) ) {
 				if( matching_items.Index( items[i] ) == wxNOT_FOUND )
 					matching_items.Add( items[i] );
 			}
