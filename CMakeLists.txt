@@ -102,3 +102,12 @@ add_executable(tracker ${WIN32} ${SRCS})
 #target_link_libraries(tracker ${wxWidgets_LIBRARIES} Xss)
 
 target_link_libraries(tracker ${LIBRARIES})
+
+#######################################################################
+### Viewer program:
+
+file(GLOB VIEWER_SRCS 
+	"viewer_src/*.cpp"
+)
+add_executable(viewer ${WIN32} ${VIEWER_SRCS})
+target_link_libraries(viewer ${LIBRARIES})

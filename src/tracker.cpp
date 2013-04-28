@@ -80,6 +80,8 @@ public:
 	void SetLabelString(const char *str);
 	void ShowTimeLogger();
 
+	virtual bool Show( bool show = true );
+
 private:
 	//MyPanel *m_panel;
 	//
@@ -126,6 +128,14 @@ IMPLEMENT_APP(MyApp)
 
 //global for the single frame that our App runs
 MyFrame *frame;
+
+bool MyFrame::Show( bool show )
+{
+	//TODO maybe we should alert here, or log the idle tracking was ignored here
+	if( show == false && _went_idle_at_time > 0 )
+		_went_idle_at_time = 0;
+	return wxFrame::Show( show );
+}
 
 void MyFrame::ShowTimeLogger()
 {
