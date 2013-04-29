@@ -400,7 +400,7 @@ void TimeSeriesPane::render(wxDC& dc)
 
 	//draw ticks below
 
-	const int num_ticks = 10;
+	const int num_ticks = width / 100;
 	int min_step = 60;
 	//if( time_span > 60*5 )
 	//	min_step = 60*2;
@@ -419,6 +419,10 @@ void TimeSeriesPane::render(wxDC& dc)
 		tick_val += tick_interval - tick_val % tick_interval;
 	}
 
+	//TODO tick_val should line up on the localtime zone, not UTC
+
+	time_t last_day = -1;
+	time_t tick_day;
 	for( ; tick_interval > 0 && tick_val < _end_time; tick_val += tick_interval ) {
 		float tick_percentage = (static_cast<float>(tick_val) - _start_time) / time_span;
 		assert( 0.0 <= tick_percentage && tick_percentage <= 1.0 );
@@ -427,13 +431,20 @@ void TimeSeriesPane::render(wxDC& dc)
 		
 		//draw time label
 		wxDateTime date_time( tick_val );
-		wxString date_time_str = date_time.Format("%H:%M");
+		wxString date_time_str = date_time.Format("%H:%M\n");
+
+		//TODO make this work for the system timezone
+		tick_day = wxDateTime(tick_val).GetDayOfYear();
+		if( last_day != tick_day ) {
+			date_time_str += date_time.Format("%Y-%m-%d");
+			last_day = tick_day;
+		}
 
 		int str_width, str_height;
 		dc.GetTextExtent(date_time_str, &str_width, &str_height);
 
 		int text_x = tick_x - str_width/2;
-		dc.DrawLabel( date_time_str, wxRect(text_x, y_top + 13, str_width, str_height), wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL );
+		dc.DrawLabel( date_time_str, wxRect(text_x, y_top + 20, str_width, str_height), wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL );
 	}
 }
 

@@ -2,7 +2,16 @@
 #include <iostream>
 #include <sstream>
 
+#include <algorithm> 
+#include <functional> 
+#include <cctype>
+#include <locale>
+
 #define BUF_SIZE 2048
+
+#ifdef WIN32
+#include <Windows.h>
+#endif //WIN32
 
 //TODO copied out of tracker
 std::string getTrackerTaskFile()
@@ -32,6 +41,22 @@ char* trim(char *s)
 	return s;
 }
 
+// trim from start
+static inline std::string &ltrim(std::string &s) {
+        s.erase(s.begin(), std::find_if(s.begin(), s.end(), std::not1(std::ptr_fun<int, int>(std::isspace))));
+        return s;
+}
+
+// trim from end
+static inline std::string &rtrim(std::string &s) {
+        s.erase(std::find_if(s.rbegin(), s.rend(), std::not1(std::ptr_fun<int, int>(std::isspace))).base(), s.end());
+        return s;
+}
+
+static inline std::string &trim(std::string &s) {
+        return ltrim(rtrim(s));
+}
+
 std::vector< Task > getTasks( const char* filename )
 {
 	std::vector< Task > tasks;
@@ -59,4 +84,32 @@ std::vector< Task > getTasks( const char* filename )
 		//std::cerr << "error reading tasks" << std::endl;
 	}
 	return tasks;
+}
+
+void writeTasks( std::vector< Task > tasks, const char* filename )
+{
+	std::string new_filename = std::string(filename) + ".new";
+	FILE *fp = fopen(new_filename.c_str(), "w");
+	if( fp == NULL )
+		throw std::exception("couldnt open file - (TODO insert the error here)");
+	for( std::vector<Task>::const_iterator i = tasks.begin(); i != tasks.end(); i++ ) {
+		std::ostringstream oss;
+		std::string s = i->name;
+		oss << i->time << " " << trim( s ) << std::endl;
+		std::string output_str = oss.str();
+		fwrite( output_str.c_str(), output_str.length(), 1, fp );
+	}
+	fclose(fp);
+	
+	//TODO THIS IS NOT WORKING
+#ifdef WIN32
+	unlink( filename );
+	BOOL ok = MoveFile( new_filename.c_str(), filename );
+	if( !ok ) {
+		DWORD error_code = GetLastError();
+		error_code = error_code;
+	}
+#else
+	assert(0); //TODO write this
+#endif //WIN32
 }

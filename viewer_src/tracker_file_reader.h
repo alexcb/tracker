@@ -13,6 +13,7 @@ public:
 };
 
 std::vector< Task > getTasks( const char* filename );
+void writeTasks( std::vector< Task > tasks, const char* filename );
 
 std::string getTrackerTaskFile();
 

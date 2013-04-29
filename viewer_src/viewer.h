@@ -22,11 +22,17 @@ public:
 
 	void onTaskLabelChange(wxCommandEvent& event);
 
+	void onSave(wxCommandEvent& event);
 private:
 	std::vector< Task > _tasks;
     wxTextCtrl *_task_label;
 	bool _selected_task;
 	void *_selected_task_data;
+
+	wxMenuBar *_menu_bar;
+	wxMenu *_file_menu;
+
+	DECLARE_EVENT_TABLE()
 };
 
 #endif //VIEWER_H_SDVNXLZ
