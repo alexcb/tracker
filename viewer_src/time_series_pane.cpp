@@ -126,7 +126,7 @@ void TimeSeriesPane::mouseDown(wxMouseEvent& event)
 		taskDeselected();
 	}
 	_mouse_drag_x_start = event.GetX();
-	calculateDisplayedTimes();
+	//calculateDisplayedTimes();
 	Refresh();
 }
 
@@ -142,8 +142,8 @@ void TimeSeriesPane::mouseReleased(wxMouseEvent& event)
 void TimeSeriesPane::mouseWheel(wxMouseEvent& event)
 {
 	const int wheel_rotation = -event.GetWheelRotation();
-	const int time_diff = _start_time - _end_time;
-	const int zoom_amount = 10; //std::min( time_diff / 5, 5 );
+	const int time_diff = _end_time - _start_time;
+	const int zoom_amount = std::max(time_diff * 0.001, 5.0);
 
 	const int width = GetSize().GetWidth();
 	const int border_width = width - _margin * 2;
@@ -151,6 +151,8 @@ void TimeSeriesPane::mouseWheel(wxMouseEvent& event)
 	assert( 0.f <= zoom_percentage && zoom_percentage <= 1.f );
 
 	int x = zoom_amount * wheel_rotation;
+	if( x <= -time_diff )
+		return;
 
 	_start_time -= x * zoom_percentage;
 	_end_time += x * (1 - zoom_percentage);
@@ -204,7 +206,7 @@ void TimeSeriesPane::calculateDisplayedTimes()
 	const int num_items = _data.size();
 	for( int i = 0; i < num_items; i++ ) {
 		float start = static_cast<float>(_data[i].time_start - _start_time) / time_span;
-		float end = static_cast<float>( i + 1 < num_items ? _data[i+1].time_start : time(NULL) - _start_time) / time_span;
+		float end = static_cast<float>( ( i + 1 < num_items ? _data[i+1].time_start : time(NULL) ) - _start_time ) / time_span;
 
 		if( start <= 1.f && end >= 0.f ) {
 		//should be equivelant to: if( 0.f <= start && start <= 1.f || 0.f <= end && end <= 1.f || start < 0.f && end > 1.f ) {
@@ -310,8 +312,6 @@ void TimeSeriesPane::render(wxDC& dc)
 	//wxBufferedDC dc( &raw_dc, GetSize() );
 
 	//dc.Clear();
-
-	calculateDisplayedTimes();
 
 	int height = 50;
 	int width = GetSize().GetWidth();
@@ -446,6 +446,7 @@ void TimeSeriesPane::render(wxDC& dc)
 		int text_x = tick_x - str_width/2;
 		dc.DrawLabel( date_time_str, wxRect(text_x, y_top + 20, str_width, str_height), wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL );
 	}
+
 }
 
 void TimeSeriesPane::windowSized(wxSizeEvent& event)

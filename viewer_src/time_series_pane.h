@@ -39,7 +39,7 @@ public:
     
 	bool updateTimeEntry(void *data, const wxString& label);
 	void addTimeEntry(time_t time, const wxString& label, void *data);
-	inline void setRange(time_t start, time_t end) { _start_time = start; _end_time = end; }
+	inline void setRange(time_t start, time_t end) { _start_time = start; _end_time = end; calculateDisplayedTimes(); }
 
 	//TODO should really just make this a virtual function
 	//inline void setCallback( timeChangedCallback callback, void *callback_data ) { _on_change_callback = callback; _callback_data = callback_data; }
