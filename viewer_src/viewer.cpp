@@ -71,11 +71,11 @@ bool ViewerApp::OnInit()
 void ViewerApp::onTaskLabelChange(wxCommandEvent& event)
 {
 	if( _selected_task ) {
-		std::string new_str = _task_label->GetValue();
+		std::string new_str( _task_label->GetValue().c_str() );
 		if( time_series_pane->updateTimeEntry( _selected_task_data, new_str ) ) {
 			time_series_pane->Refresh();
 			
-			int i = (int) _selected_task_data;
+			int i = *((int*) &_selected_task_data);
 			assert( 0 <= i && i < _tasks.size() );
 			 _tasks[i].name = new_str;
 			 frame->SetTitle(UNSAVED_TITLE);
@@ -85,7 +85,7 @@ void ViewerApp::onTaskLabelChange(wxCommandEvent& event)
 
 void ViewerApp::timeRangeChanged(time_t time, void *time_data)
 {
-	int i = (int) time_data;
+	int i = *((int*) &time_data);
 	assert( 0 <= i && i < _tasks.size() );
 	_tasks[i].time = time;
 	frame->SetTitle(UNSAVED_TITLE);
@@ -93,7 +93,7 @@ void ViewerApp::timeRangeChanged(time_t time, void *time_data)
 
 void ViewerApp::selectTask(void *task_data)
 {
-	int i = (int) task_data;
+	int i = *((int*) &task_data);
 	assert( 0 <= i && i < _tasks.size() );
 	_selected_task = true;
 	_selected_task_data = task_data;

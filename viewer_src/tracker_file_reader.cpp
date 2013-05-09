@@ -6,11 +6,25 @@
 #include <functional> 
 #include <cctype>
 #include <locale>
+#include <stdexcept>
+
+#include <string.h>
+#include <stdio.h>
+#include <assert.h>
 
 #define BUF_SIZE 2048
 
 #ifdef WIN32
+
+//Windows only includes
 #include <Windows.h>
+
+#else
+
+//linux only includes
+#include <pwd.h>
+#include <unistd.h>
+
 #endif //WIN32
 
 //TODO copied out of tracker
@@ -90,8 +104,10 @@ void writeTasks( std::vector< Task > tasks, const char* filename )
 {
 	std::string new_filename = std::string(filename) + ".new";
 	FILE *fp = fopen(new_filename.c_str(), "w");
-	if( fp == NULL )
-		throw std::exception("couldnt open file - (TODO insert the error here)");
+	if( fp == NULL ) {
+		std::cerr << "failed to open .new file" << std::endl;
+		throw std::runtime_error("couldnt open file - (TODO insert the error here)");
+	}
 	for( std::vector<Task>::const_iterator i = tasks.begin(); i != tasks.end(); i++ ) {
 		std::ostringstream oss;
 		std::string s = i->name;
@@ -101,7 +117,6 @@ void writeTasks( std::vector< Task > tasks, const char* filename )
 	}
 	fclose(fp);
 	
-	//TODO THIS IS NOT WORKING
 #ifdef WIN32
 	unlink( filename );
 	BOOL ok = MoveFile( new_filename.c_str(), filename );
@@ -110,6 +125,11 @@ void writeTasks( std::vector< Task > tasks, const char* filename )
 		error_code = error_code;
 	}
 #else
-	assert(0); //TODO write this
+	//TODO check error code of this
+	int result = rename( new_filename.c_str(), filename );
+	if( result != 0 ) {
+		std::cerr << "failed to write to disk " << result << std::endl;
+		assert(0);
+	}
 #endif //WIN32
 }
