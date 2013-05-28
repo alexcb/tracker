@@ -51,7 +51,11 @@ bool ViewerApp::OnInit()
 		time_series_pane->addTimeEntry( _tasks[i].time, _tasks[i].name, (void*) i );
 	}
 
-	time_series_pane->setRange( time_max - 60*60*24, time_max );
+	//set to week of last data
+	if( _tasks.size() > 0 )
+		time_series_pane->setWeek( _tasks.back().time );
+
+//	time_series_pane->setRange( time_max - 60*60*24, time_max );
 
     sizer->Add(time_series_pane, 1, wxEXPAND);
 	
