@@ -558,6 +558,7 @@ void TaskWeekEditor::mouseReleaseEvent( QMouseEvent *event )
 		_selected_boundary_task = NULL;
 		//QToolTip::hideText();
 		update();
+		_tasks->save();
 	}
 }
 

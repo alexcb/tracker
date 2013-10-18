@@ -18,6 +18,8 @@ public:
 	TaskEntryWindow( TaskList *task_list, UserSettings *user_settings, EditorWindow *editor_window, QWidget *parent = 0 );
 	TaskEntryWidget *_task_entry_widget;
 
+	void keyPressEvent(QKeyEvent *event);
+
 #ifdef _WIN32
 	virtual bool nativeEvent (const QByteArray &eventType, void *message, long *result );
 	void registerHotKey();

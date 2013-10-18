@@ -3,6 +3,8 @@
 #include "task_entry_widget.h"
 #include "user_settings.h"
 
+#include <QtGui\QKeyEvent>
+
 #ifdef _WIN32
 #include <Windows.h>
 #endif //_WIN32
@@ -20,6 +22,15 @@ TaskEntryWindow::TaskEntryWindow( TaskList *task_list, UserSettings *user_settin
 	registerHotKey();
 	connect( user_settings, SIGNAL( settingsChanged() ), this, SLOT( hotKeyChanged() ) );
 #endif //_WIN32
+}
+
+void TaskEntryWindow::keyPressEvent(QKeyEvent *event)
+{
+    if( event->key() == Qt::Key_Escape ) {
+		hide();
+	} else {
+		QMainWindow::keyPressEvent( event );
+	}
 }
 
 #ifdef _WIN32
