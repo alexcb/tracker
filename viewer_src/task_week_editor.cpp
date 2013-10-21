@@ -8,9 +8,6 @@
 #include <QtWidgets>
 #include <QPushButton>
 #include <qtooltip.h>
-#include <qmenubar.h>
-#include <qmenu.h>
-#include <qmessagebox.h>
 
 #include <time.h>
 #include <assert.h>
@@ -540,6 +537,7 @@ void TaskWeekEditor::mousePressEvent( QMouseEvent *event )
 		LoggedTask *logged_task = getTaskByStartPos( event->x(), event->y() );
 		if( logged_task ) {
 			_selected_boundary_task = logged_task;
+			_selected_boundary_task_initial_value = logged_task->time;
 			_selected_task = NULL;
 		} else {
 			_selected_boundary_task = NULL;
@@ -547,7 +545,6 @@ void TaskWeekEditor::mousePressEvent( QMouseEvent *event )
 			_selected_visible_task = NULL;
 			setTaskEditorPosition();
 		}
-
 		update();
 	}
 }
@@ -555,6 +552,7 @@ void TaskWeekEditor::mousePressEvent( QMouseEvent *event )
 void TaskWeekEditor::mouseReleaseEvent( QMouseEvent *event )
 {
 	if( _selected_boundary_task ) {
+		_undo_actions.push( UndoAction( _selected_boundary_task, _selected_boundary_task_initial_value ) );
 		_selected_boundary_task = NULL;
 		//QToolTip::hideText();
 		update();
@@ -642,4 +640,25 @@ void TaskWeekEditor::handleButton()
 	}
 	calcVisibleTasks();
 	update();
+}
+
+void TaskWeekEditor::undo()
+{
+	if( _undo_actions.size() > 0 ) {
+		_undo_actions.top().apply_undo();
+		_undo_actions.pop();
+		_tasks->save();
+		calcVisibleTasks();
+		update();
+	}
+}
+
+UndoAction::UndoAction(LoggedTask *logged_task, time_t original_start_time ) :
+		_logged_task( logged_task ),
+		_original_start_time( original_start_time )
+{}
+
+void UndoAction::apply_undo()
+{
+	_logged_task->time = _original_start_time;
 }

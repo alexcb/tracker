@@ -16,6 +16,7 @@
 
 #include "user_settings.h"
 
+
 //globals
 
 //the tasks
@@ -38,7 +39,7 @@ int CALLBACK WinMain(
 {
 	int argc = 0;
 	QApplication app(argc, NULL);
-
+	
 	tasks.load( getTrackerTaskFile().c_str() );
 	user_settings.load( getTrackerUserSettingsFile().c_str() );
 

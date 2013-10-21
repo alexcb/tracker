@@ -1,6 +1,8 @@
 #include "editor_window.h"
 
 #include <QWidget>
+#include <QMenu>
+#include <QMenuBar>
 
 #include "task_week_editor.h"
 
@@ -12,9 +14,14 @@ EditorWindow::EditorWindow(TaskList *tasks, UserSettings *user_settings, QWidget
 {
 	editor_widget = new EditorWidget(tasks, user_settings, this);
 	setCentralWidget(editor_widget);
-}
 
-void EditorWindow::fileSave()
-{
-	//TODO THIS NEEDS TO BE IMPLEMENTED
+	QAction *undo = new QAction("&Undo", this);
+	undo->setShortcut(tr("CTRL+Z"));
+
+	QMenu *file;
+	file = menuBar()->addMenu( "&File" );
+	file->addAction( undo );
+
+
+	connect( undo, SIGNAL( triggered() ), editor_widget->task_week_editor, SLOT( undo() ) );
 }

@@ -13,7 +13,6 @@ class EditorWidget : public QWidget
 public:
 	EditorWidget(TaskList *tasks, UserSettings *user_settings, QWidget *parent = 0);
 	TaskWeekEditor *task_week_editor;
-	TaskDropDownWidget *_drop_down_widget;
 };
 
 #endif //_EDITOR_WIDGET_H_FSDMXN

@@ -4,12 +4,24 @@
 #include <QWidget>
 #include <qpushbutton.h>
 
+#include <stack>
+
 typedef void (*taskChangedCallback)(void *callback_data, void *task_data, const char *label, time_t time);
 
 class QLineEdit;
 class TaskList;
 class LoggedTask;
 class UserSettings;
+
+class UndoAction
+{
+public:
+	UndoAction(LoggedTask *logged_task, time_t original_start_time );
+	void apply_undo();
+private:
+	LoggedTask *_logged_task;
+	time_t _original_start_time;
+};
 
 class TaskWeekEditor : public QWidget
 {
@@ -23,6 +35,8 @@ public:
 	void setWeek( time_t time );
 	inline void setTaskChangedCallback(taskChangedCallback cb, void *callback_data) { _task_changed_cb = cb; _task_changed_cb_data = callback_data; }
 
+	bool paint_light;
+
 protected:
     virtual void paintEvent(QPaintEvent *event);
     virtual void mouseMoveEvent(QMouseEvent *event);
@@ -32,6 +46,9 @@ protected:
 	virtual void mouseReleaseEvent(QMouseEvent *);
 	virtual void resizeEvent(QResizeEvent *event);
 
+public slots:
+	void undo();
+
 private slots:
     void handleButton();
 
@@ -39,6 +56,8 @@ private:
 	class VisibleTask;
 
 	TaskList *_tasks;
+
+	std::stack< UndoAction > _undo_actions;
 
 	taskChangedCallback _task_changed_cb;
 	void *_task_changed_cb_data;
@@ -52,7 +71,10 @@ private:
 	VisibleTask* getVisibleTaskByPos( int x, int y );
 
 	inline int dayOfWeekByPos( int x ) const {
-		int day_of_week = (x - _margin - _time_column_width) / _day_column_width;
+		int x_rel = (x - _margin - _time_column_width);
+		if( x_rel < 0 )
+			return -1;
+		int day_of_week = x_rel / _day_column_width;
 		if( day_of_week < 0 || day_of_week > 6 )
 			day_of_week = -1;
 		return day_of_week;
@@ -80,6 +102,8 @@ private:
 
 	//when dragging the start time of a task, this is set to that task
 	LoggedTask *_selected_boundary_task;
+	//initial value before editing a task (used for undo)
+	time_t _selected_boundary_task_initial_value;
 
 	//when selecting the task (to rename), this is set
 	LoggedTask *_selected_task;
@@ -117,17 +141,6 @@ private:
 	}
 
 	
-	//class Task
-	//{
-	//public:
-	//	Task( time_t start_time, const char *label, void *data = NULL ) : time_start( start_time ), label( label ), data( data ) {}
-	//	std::string label;
-	//	time_t time_start;
-	//	void *data;
-
-	//	inline QString formatTaskStartTime() const;
-	//};
-
 	class VisibleTask
 	{
 	public:

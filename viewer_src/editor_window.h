@@ -14,8 +14,6 @@ class EditorWindow : public QMainWindow
 public:
 	EditorWindow(TaskList *tasks, UserSettings *user_settings, QWidget *parent = 0);
 	EditorWidget *editor_widget;
-private slots:
-	void fileSave();
 };
 
 #endif //_EDITOR_WINDOW_H_DFGSNXLV
