@@ -23,12 +23,12 @@ private:
 	time_t _original_start_time;
 };
 
-class TaskWeekEditor : public QWidget
+class TaskListEditorWidget : public QWidget
 {
-    Q_OBJECT //if we include this, we need to use the moc tool to generate some c++ code for us. ugh.
+    Q_OBJECT
 
 public:
-    TaskWeekEditor(TaskList *tasks, UserSettings *user_settings, QWidget *parent = 0);
+    TaskListEditorWidget(TaskList *tasks, UserSettings *user_settings, QWidget *parent = 0);
 
 	void addTask( time_t start_time, const char *task_name, void *data);
 

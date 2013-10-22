@@ -8,7 +8,7 @@ class UserSettings;
 
 class LoggedTaskEditorDialog : public QDialog
 {
-	Q_OBJECT //if we include this, we need to use the moc tool to generate some c++ code for us. ugh.
+	Q_OBJECT
 public:
 	explicit LoggedTaskEditorDialog(LoggedTask *logged_task, TaskList *task_list, UserSettings *user_settings, QWidget *parent = 0, Qt::WindowFlags f = 0);
 private slots:

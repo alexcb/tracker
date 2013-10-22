@@ -7,7 +7,7 @@
 
 class TaskEntryWidget;
 class TaskList;
-class EditorWindow;
+class TaskListEditorWindow;
 class UserSettings;
 
 class TaskEntryWindow : public QMainWindow
@@ -15,7 +15,7 @@ class TaskEntryWindow : public QMainWindow
 	Q_OBJECT
 
 public:
-	TaskEntryWindow( TaskList *task_list, UserSettings *user_settings, EditorWindow *editor_window, QWidget *parent = 0 );
+	TaskEntryWindow( TaskList *task_list, UserSettings *user_settings, TaskListEditorWindow *editor_window, QWidget *parent = 0 );
 	TaskEntryWidget *_task_entry_widget;
 
 	void keyPressEvent(QKeyEvent *event);

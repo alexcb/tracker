@@ -1,4 +1,4 @@
-#include "task_week_editor.h"
+#include "task_list_editor_widget.h"
 
 #include "math_utils.h"
 #include "logged_task_editor_dialog.h"
@@ -7,7 +7,7 @@
 
 #include <QtWidgets>
 #include <QPushButton>
-#include <qtooltip.h>
+#include <QToolTip>
 
 #include <time.h>
 #include <assert.h>
@@ -56,7 +56,7 @@ inline time_t getSecondsSinceLocalTimeMidnight( time_t t )
 	return QTime(0,0).secsTo( date_time.time() );
 }
 
-TaskWeekEditor::TaskWeekEditor( TaskList *tasks, UserSettings *user_settings, QWidget *parent )
+TaskListEditorWidget::TaskListEditorWidget( TaskList *tasks, UserSettings *user_settings, QWidget *parent )
     : QWidget( parent ),
 	_margin( 20 ),
 	_top_heading_size( 40 ),
@@ -86,7 +86,7 @@ TaskWeekEditor::TaskWeekEditor( TaskList *tasks, UserSettings *user_settings, QW
 	setMouseTracking( true );
 }
 
-void TaskWeekEditor::setWeek( time_t time )
+void TaskListEditorWidget::setWeek( time_t time )
 {
 	QDateTime date_time;
 	date_time.setTime_t( time );
@@ -104,7 +104,7 @@ void TaskWeekEditor::setWeek( time_t time )
 	_week_end_time = date_time.toTime_t();
 }
 
-void TaskWeekEditor::calcWindowResizeValues()
+void TaskListEditorWidget::calcWindowResizeValues()
 {
 	_grid_width = width() - _margin * 2;
 	_grid_height = height() - _margin * 2 - _top_heading_size;
@@ -113,7 +113,7 @@ void TaskWeekEditor::calcWindowResizeValues()
 }
 
 //TODO check how this handles DST (setting to 2hr 30min on a fall back day, I would want the time to then be 1:30)
-time_t TaskWeekEditor::localDayTimeToUTC( int day_of_week, int seconds_since_midnight ) const
+time_t TaskListEditorWidget::localDayTimeToUTC( int day_of_week, int seconds_since_midnight ) const
 {
 	QDateTime date_time;
 	date_time.setTime_t( _week_start_time );
@@ -121,7 +121,7 @@ time_t TaskWeekEditor::localDayTimeToUTC( int day_of_week, int seconds_since_mid
 	return date_time.toTime_t();
 }
 
-void TaskWeekEditor::calcVisibleTasks()
+void TaskListEditorWidget::calcVisibleTasks()
 {
 	_visible_tasks.clear();
 
@@ -209,7 +209,7 @@ void TaskWeekEditor::calcVisibleTasks()
 	}
 }
 
-int TaskWeekEditor::getSecondsPerPlotTick( int tick_spacing ) const
+int TaskListEditorWidget::getSecondsPerPlotTick( int tick_spacing ) const
 {
 	const int num_ticks = _grid_height / tick_spacing;
 	const int day_seconds_displayed = _day_end_time - _day_start_time;
@@ -235,7 +235,7 @@ int TaskWeekEditor::getSecondsPerPlotTick( int tick_spacing ) const
 	return seconds_per_tick;
 }
 
-LoggedTask* TaskWeekEditor::getTaskByStartPos( int x, int y, int y_tolerance )
+LoggedTask* TaskListEditorWidget::getTaskByStartPos( int x, int y, int y_tolerance )
 {
 	LoggedTask *task = NULL;
 	const int day_of_week = dayOfWeekByPos(x);
@@ -251,7 +251,7 @@ LoggedTask* TaskWeekEditor::getTaskByStartPos( int x, int y, int y_tolerance )
 	return task;
 }
 
-LoggedTask* TaskWeekEditor::getTaskByPos( int x, int y )
+LoggedTask* TaskListEditorWidget::getTaskByPos( int x, int y )
 {
 	VisibleTask *visible_task = getVisibleTaskByPos( x, y );
 	LoggedTask *task = NULL;
@@ -261,7 +261,7 @@ LoggedTask* TaskWeekEditor::getTaskByPos( int x, int y )
 	return task;
 }
 
-TaskWeekEditor::VisibleTask* TaskWeekEditor::getVisibleTaskByPos( int x, int y )
+TaskListEditorWidget::VisibleTask* TaskListEditorWidget::getVisibleTaskByPos( int x, int y )
 {
 	VisibleTask *visible_task = NULL;
 	const int day_of_week = dayOfWeekByPos(x);
@@ -278,7 +278,7 @@ TaskWeekEditor::VisibleTask* TaskWeekEditor::getVisibleTaskByPos( int x, int y )
 	
 }
 
-time_t TaskWeekEditor::mousePosToTimestamp( int x, int y ) const
+time_t TaskListEditorWidget::mousePosToTimestamp( int x, int y ) const
 {
 	const int day_of_week = dayOfWeekByPos(x);
 	
@@ -290,7 +290,7 @@ time_t TaskWeekEditor::mousePosToTimestamp( int x, int y ) const
 	return timestamp;
 }
 
-void TaskWeekEditor::setTaskTimestamp( LoggedTask *task, time_t timestamp, time_t min_time_padding )
+void TaskListEditorWidget::setTaskTimestamp( LoggedTask *task, time_t timestamp, time_t min_time_padding )
 {
 	LoggedTask *start_task = _tasks->getLoggedTask(0);
 	LoggedTask *end_task = start_task + _tasks->num_logged_tasks();
@@ -320,7 +320,7 @@ void TaskWeekEditor::setTaskTimestamp( LoggedTask *task, time_t timestamp, time_
 //////////////////////////////////
 //QT EVENTS BELOW
 
-void TaskWeekEditor::resizeEvent( QResizeEvent *event )
+void TaskListEditorWidget::resizeEvent( QResizeEvent *event )
 {
 	calcWindowResizeValues();
 
@@ -336,7 +336,7 @@ void TaskWeekEditor::resizeEvent( QResizeEvent *event )
 	calcVisibleTasks();
 }
 
-void TaskWeekEditor::setTaskEditorPosition()
+void TaskListEditorWidget::setTaskEditorPosition()
 {
 	if( _selected_visible_task ) {
 		const int task_height = _selected_visible_task->stop_y - _selected_visible_task->start_y;
@@ -359,7 +359,7 @@ void TaskWeekEditor::setTaskEditorPosition()
 	}
 }
 
-void TaskWeekEditor::paintEvent(QPaintEvent *)
+void TaskListEditorWidget::paintEvent(QPaintEvent *)
 {
 	//TODO only call this on resize
 	calcWindowResizeValues();
@@ -518,7 +518,7 @@ void TaskWeekEditor::paintEvent(QPaintEvent *)
 	painter.save();
 }
 
-void TaskWeekEditor::mouseDoubleClickEvent( QMouseEvent *event )
+void TaskListEditorWidget::mouseDoubleClickEvent( QMouseEvent *event )
 {
 	if( event->buttons() & Qt::LeftButton ) {
 		_selected_visible_task = getVisibleTaskByPos( event->x(), event->y() );
@@ -531,7 +531,7 @@ void TaskWeekEditor::mouseDoubleClickEvent( QMouseEvent *event )
 	}
 }
 
-void TaskWeekEditor::mousePressEvent( QMouseEvent *event )
+void TaskListEditorWidget::mousePressEvent( QMouseEvent *event )
 {
 	if( event->buttons() & Qt::LeftButton ) {
 		LoggedTask *logged_task = getTaskByStartPos( event->x(), event->y() );
@@ -549,7 +549,7 @@ void TaskWeekEditor::mousePressEvent( QMouseEvent *event )
 	}
 }
 
-void TaskWeekEditor::mouseReleaseEvent( QMouseEvent *event )
+void TaskListEditorWidget::mouseReleaseEvent( QMouseEvent *event )
 {
 	if( _selected_boundary_task ) {
 		_undo_actions.push( UndoAction( _selected_boundary_task, _selected_boundary_task_initial_value ) );
@@ -560,7 +560,7 @@ void TaskWeekEditor::mouseReleaseEvent( QMouseEvent *event )
 	}
 }
 
-void TaskWeekEditor::mouseMoveEvent( QMouseEvent *event )
+void TaskListEditorWidget::mouseMoveEvent( QMouseEvent *event )
 {
 	LoggedTask *logged_task = getTaskByStartPos( event->x(), event->y() );
     if (event->buttons() & Qt::LeftButton) {
@@ -585,7 +585,7 @@ void TaskWeekEditor::mouseMoveEvent( QMouseEvent *event )
 	event->accept();
 }
 
-void TaskWeekEditor::wheelEvent( QWheelEvent *event )
+void TaskListEditorWidget::wheelEvent( QWheelEvent *event )
 {
 	int d = event->delta();
 	event->x();
@@ -626,7 +626,7 @@ void TaskWeekEditor::wheelEvent( QWheelEvent *event )
 
 //slots
 
-void TaskWeekEditor::handleButton()
+void TaskListEditorWidget::handleButton()
 {
     // change the text
     setWindowTitle("button pushed");
@@ -642,7 +642,7 @@ void TaskWeekEditor::handleButton()
 	update();
 }
 
-void TaskWeekEditor::undo()
+void TaskListEditorWidget::undo()
 {
 	if( _undo_actions.size() > 0 ) {
 		_undo_actions.top().apply_undo();

@@ -25,4 +25,14 @@ file(GLOB tracker_HEADERS
 )
 
 ADD_EXECUTABLE(tracker ${WIN32} ${tracker_HEADERS} ${tracker_SOURCES})
-qt5_use_modules(tracker Widgets)
+qt5_use_modules(tracker LINK_PRIVATE Widgets)
+
+
+MESSAGE("====================================================")
+MESSAGE(" IMPORTANT USER ACTION REQUIRED                     ")
+MESSAGE("====================================================")
+MESSAGE("To run tracker under visual studio debugger, set    ")
+MESSAGE("tracker->properties->Debugging->Environment         ")
+MESSAGE("to                                                  ")
+MESSAGE("PATH=${CMAKE_PREFIX_PATH}/bin;%PATH%                ")
+MESSAGE("====================================================")

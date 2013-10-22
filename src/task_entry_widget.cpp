@@ -4,7 +4,7 @@
 #include "tracked_task_item_delegate.h"
 #include "tracked_task_completer.h"
 #include "tracked_task_line_edit.h"
-#include "editor_window.h"
+#include "task_list_editor_window.h"
 #include "task_list.h"
 #include "human_text.h"
 #include "idle_input_time.h"
@@ -25,7 +25,7 @@
 #include <sstream>
 #include <time.h>
 
-TaskEntryWidget::TaskEntryWidget( TaskList *task_list, UserSettings *user_settings, EditorWindow *editor_window, QWidget *parent ) :
+TaskEntryWidget::TaskEntryWidget( TaskList *task_list, UserSettings *user_settings, TaskListEditorWindow *editor_window, QWidget *parent ) :
 	QWidget( parent ),
 	_task_list( task_list ),
 	_editor_window( editor_window ),

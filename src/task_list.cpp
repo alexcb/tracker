@@ -36,8 +36,6 @@ const char* NoTaskHistoryError::what()
 }
 
 
-
-//TODO copied out of tracker
 std::string getTrackerTaskFile()
 {
 #ifdef WIN32
@@ -93,13 +91,6 @@ static inline std::string &rtrim(std::string &s) {
 
 static inline std::string &trim(std::string &s) {
         return ltrim(rtrim(s));
-}
-
-
-
-void writeTasks( std::vector< Task > tasks, const char* filename )
-{
-
 }
 
 

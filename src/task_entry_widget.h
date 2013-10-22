@@ -10,14 +10,14 @@ class QTimer;
 class TaskDropDownWidget;
 class TrackedTasksListModel;
 class TaskList;
-class EditorWindow;
+class TaskListEditorWindow;
 class UserSettings;
 
 class TaskEntryWidget : public QWidget
 {
-	Q_OBJECT //if we include this, we need to use the moc tool to generate some c++ code for us. ugh.
+	Q_OBJECT
 public:
-    TaskEntryWidget( TaskList *task_list, UserSettings *user_settings, EditorWindow *editor_window, QWidget *parent = 0);
+    TaskEntryWidget( TaskList *task_list, UserSettings *user_settings, TaskListEditorWindow *editor_window, QWidget *parent = 0);
 
 	void promptTask();
 	//void promptIdleTask( time_t seconds_idle );
@@ -40,7 +40,7 @@ private:
 	QLabel *_idle_label_2;
 
 	TaskList *_task_list;
-	EditorWindow *_editor_window;
+	TaskListEditorWindow *_editor_window;
 
 	TrackedTasksListModel *_tracked_tasks_list_model;
 

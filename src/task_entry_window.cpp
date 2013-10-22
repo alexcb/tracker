@@ -9,7 +9,7 @@
 #include <Windows.h>
 #endif //_WIN32
 
-TaskEntryWindow::TaskEntryWindow( TaskList *task_list, UserSettings *user_settings, EditorWindow *editor_window, QWidget *parent ) : 
+TaskEntryWindow::TaskEntryWindow( TaskList *task_list, UserSettings *user_settings, TaskListEditorWindow *editor_window, QWidget *parent ) : 
 	QMainWindow(parent),
 	_user_settings( user_settings )
 {

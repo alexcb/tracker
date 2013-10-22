@@ -1,21 +1,15 @@
-#include <Windows.h>
+#include "task_list_editor_window.h"
+#include "task_list_editor_widget.h"
+#include "task_list.h"
+#include "task_entry_window.h"
+#include "user_settings.h"
 
 #include <QApplication>
 #include <QMainWindow>
 #include <QWidget>
-#include "QtGui\qevent.h"
+#include <QEvent>
 
-#include "editor_window.h"
-#include "editor_widget.h"
-
-#include "task_week_editor.h"
-
-#include "task_list.h"
-
-#include "task_entry_window.h"
-
-#include "user_settings.h"
-
+#include <Windows.h>
 
 //globals
 
@@ -23,7 +17,7 @@
 TaskList tasks;
 
 //the editor window
-EditorWindow *task_editor_window;
+TaskListEditorWindow *task_editor_window;
 
 //the task entry window
 TaskEntryWindow *task_entry_window;
@@ -44,8 +38,8 @@ int CALLBACK WinMain(
 	user_settings.load( getTrackerUserSettingsFile().c_str() );
 
 	//create viewer window/GUI
-	task_editor_window = new EditorWindow( &tasks, &user_settings );
-	TaskWeekEditor *task_editor = task_editor_window->editor_widget->task_week_editor;
+	task_editor_window = new TaskListEditorWindow( &tasks, &user_settings );
+	TaskListEditorWidget *task_editor = task_editor_window->task_week_editor;
 	
 	const unsigned int num_tasks = tasks.num_logged_tasks();
 	if( tasks.num_logged_tasks() > 1 ) {
