@@ -4,6 +4,7 @@ tracker.dir
 tracker.opensdf
 tracker.sdf
 tracker.sln
+tracker.suo
 tracker_automoc.cpp
 CMakeCache.txt
 Debug

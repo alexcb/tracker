@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 2.8.9)
 PROJECT(tracker)
 
 #TODO set this to build (figure out whats needed on linux, if anything)
-SET(CMAKE_PREFIX_PATH C:/qt/Qt5.0.2/5.0.2/msvc2010)
+#SET(CMAKE_PREFIX_PATH C:/qt/Qt5.0.2/5.0.2/msvc2010)
 
 #build a win32 app (rather than console)
 SET(WIN32 "WIN32")

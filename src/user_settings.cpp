@@ -6,7 +6,9 @@
 UserSettings::UserSettings() :
 	num_minutes_before_idle( 5 ),
 	auto_complete_show_tasks_newer_than_days( 60 )
-{}
+{
+	hot_key_code = "ctrl+alt+t";	
+}
 
 
 void UserSettings::load( const char *file_path )

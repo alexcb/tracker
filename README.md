@@ -16,22 +16,35 @@ tracker can be compiled for both Windows and Linux.
 Windows Details
 ---------------
 
-Windows supports a global hotkey, it defaults to ctrl-shift-enter, but can be changed by creating a tracker.ini file in the same directory where tracker.exe is executed.
+Build instructions:
+-requires: QT v5
+-cmake
 
-<pre>
-[hotkey]
-#A single key (e.g. "x") to bind to, or "space" or "enter"
-key=enter
-#modifiers applied to the key (defaults to ctrl+shift+enter)
-#values: yes or no (lower case)
-ctrl=yes
-shift=yes
-alt=no
-</pre>
+1: Create a solution file with the following steps
+Edit the following variables in windows_generate_solution.bat:
+-update PATH to include the location of cmake.exe, and vcexpress.exe
+-update QTROOT to point to the root qt directory
+Then run the bat script
 
-I was surprised that the windows key modifier was reserved under windows 7, so I couldn't bind to win-T like I do under linux.
+2: compiling a release version:
+-open build\tracker.sln
+-select "Release" from build drop down
+-build
 
-Tracked time is output to the file tracker_time.txt in the same directory as the tracker.exe
+If running the program through visual studio, you will need to update the path to include the DLL locations:
+tracker -> right click -> properties -> Debugging.
+Set Environment to include:
+
+    PATH=C:\qt\Qt5.0.2\5.0.2\msvc2010\bin;%PATH%
+
+3: packaging:
+Edit the following variables in windows_package_release.bat:
+-update QTROOT to point to the root qt directory
+Then run the bat script
+
+
+
+
 
 Linux
 -----

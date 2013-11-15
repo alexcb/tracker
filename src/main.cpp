@@ -8,9 +8,11 @@
 #include <QMainWindow>
 #include <QWidget>
 #include <QEvent>
+#include <QMessageBox> //TODO remove
 
 #include <Windows.h>
 
+/////////////////////////////////
 //globals
 
 //the tasks
@@ -24,6 +26,8 @@ TaskEntryWindow *task_entry_window;
 
 UserSettings user_settings;
 
+/////////////////////////////////
+
 int CALLBACK WinMain(
   _In_  HINSTANCE hInstance,
   _In_  HINSTANCE hPrevInstance,
@@ -33,14 +37,14 @@ int CALLBACK WinMain(
 {
 	int argc = 0;
 	QApplication app(argc, NULL);
-	
+
 	tasks.load( getTrackerTaskFile().c_str() );
 	user_settings.load( getTrackerUserSettingsFile().c_str() );
 
 	//create viewer window/GUI
 	task_editor_window = new TaskListEditorWindow( &tasks, &user_settings );
 	TaskListEditorWidget *task_editor = task_editor_window->task_week_editor;
-	
+
 	const unsigned int num_tasks = tasks.num_logged_tasks();
 	if( tasks.num_logged_tasks() > 1 ) {
 		task_editor->setWeek(tasks.getLoggedTask( num_tasks - 1 )->time );
@@ -54,6 +58,6 @@ int CALLBACK WinMain(
 	task_entry_window->resize(700, 100);
 	task_entry_window->show();
 
-    return app.exec();
+   return app.exec();
 }
 
