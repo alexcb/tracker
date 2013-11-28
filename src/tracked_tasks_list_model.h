@@ -1,6 +1,6 @@
 #include "task_list.h"
 
-#include "QtCore\qabstractitemmodel.h"
+#include <QAbstractItemModel>
 
 #include <set>
 

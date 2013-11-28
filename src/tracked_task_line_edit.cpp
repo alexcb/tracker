@@ -5,10 +5,10 @@
 #include "tracked_task_item_delegate.h"
 #include "task_list.h"
 
-#include <QtGui\QKeyEvent>
-#include <QtWidgets\qcompleter.h>
+#include <QKeyEvent>
+#include <QCompleter>
 
-#include <qabstractitemview.h>
+#include <QAbstractItemView>
 
 TrackedTaskLineEdit::TrackedTaskLineEdit( TaskList *task_list, UserSettings *user_settings, QWidget *parent ) :
 	QLineEdit(parent),

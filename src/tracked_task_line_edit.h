@@ -13,7 +13,7 @@ public:
 	~TrackedTaskLineEdit();
 
 	virtual void keyPressEvent( QKeyEvent * e );
-	virtual bool TrackedTaskLineEdit::event( QEvent *event );
+	virtual bool event( QEvent *event );
 protected:
 public: //TODO REMOVE THIS
 	bool _current_prefix_match;

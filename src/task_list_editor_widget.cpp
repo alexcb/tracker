@@ -71,6 +71,9 @@ TaskListEditorWidget::TaskListEditorWidget( TaskList *tasks, UserSettings *user_
 	_tasks( tasks ),
 	_user_settings( user_settings )
 {
+	resize(900, 900);	
+	calcWindowResizeValues();
+
 	_prev_week_button = new QPushButton( "prev week", this );
 	_this_week_button = new QPushButton( "this week", this );
 	_next_week_button = new QPushButton( "next week", this );
@@ -82,6 +85,8 @@ TaskListEditorWidget::TaskListEditorWidget( TaskList *tasks, UserSettings *user_
 	_task_name_line_edit = new QLineEdit( this );
 
 	setMinimumSize( 700, 200 );
+
+	std::cout << width() << std::endl;
 
 	setMouseTracking( true );
 }
@@ -361,6 +366,7 @@ void TaskListEditorWidget::setTaskEditorPosition()
 
 void TaskListEditorWidget::paintEvent(QPaintEvent *)
 {
+	std::cout << "painting" << std::endl;
 	//TODO only call this on resize
 	calcWindowResizeValues();
 

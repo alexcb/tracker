@@ -5,7 +5,7 @@
 
 #include <QPushButton>
 #include <QLabel>
-#include <QFormlayout>
+#include <QFormLayout>
 
 #include <sstream>
 

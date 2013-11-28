@@ -3,7 +3,7 @@
 #include "task_entry_widget.h"
 #include "user_settings.h"
 
-#include <QtGui\QKeyEvent>
+#include <QKeyEvent>
 
 #ifdef _WIN32
 #include <Windows.h>

@@ -2,7 +2,7 @@
 
 #include "tracked_tasks_list_model.h"
 
-#include <QtCore\qstringlist.h>
+#include <QStringList>
 
 TrackedTasksCompleter::TrackedTasksCompleter(TrackedTasksListModel *model, QObject *parent) :
 QCompleter( model, parent ),

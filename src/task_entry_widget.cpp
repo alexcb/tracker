@@ -15,13 +15,14 @@
 #include <QWidget>
 #include <QLabel>
 #include <QVBoxLayout>
-#include <QFormlayout>
-#include <QPushbutton>
-#include <QtCore\qtimer.h>
+#include <QFormLayout>
+#include <QPushButton>
+#include <QTimer>
 
-#include <qcombobox.h>
+#include <QComboBox>
 #include <QAbstractItemView>
 
+#include <algorithm>
 #include <sstream>
 #include <time.h>
 
@@ -60,7 +61,6 @@ TaskEntryWidget::TaskEntryWidget( TaskList *task_list, UserSettings *user_settin
 	horiz_layout->addWidget( settings_button );
 	horiz_layout->addWidget( edit_button );
 	layout->addRow( NULL, horiz_layout );
-
 
 	setLayout(layout);
 
@@ -167,7 +167,7 @@ void TaskEntryWidget::timerUpdate()
 			//_displayed_idle_return_window = false;
 		}
 	} else {
-		next_check = min( idle_time_ms - ms_idle, 60 * 1000 );
+		next_check = std::min( idle_time_ms - ms_idle, static_cast<time_t>(60 * 1000) );
 		if( _went_idle_at > 0 /*&& _displayed_idle_return_window == false*/ ) {
 			//user returned
 			promptTask();

@@ -72,7 +72,7 @@ private:
 
 	inline int dayOfWeekByPos( int x ) const {
 		int x_rel = (x - _margin - _time_column_width);
-		if( x_rel < 0 )
+		if( x_rel < 0 || _day_column_width <= 0 )
 			return -1;
 		int day_of_week = x_rel / _day_column_width;
 		if( day_of_week < 0 || day_of_week > 6 )

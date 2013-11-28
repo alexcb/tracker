@@ -27,6 +27,8 @@ file(GLOB tracker_HEADERS
 ADD_EXECUTABLE(tracker ${WIN32} ${tracker_HEADERS} ${tracker_SOURCES})
 qt5_use_modules(tracker LINK_PRIVATE Widgets)
 
+TARGET_LINK_LIBRARIES(tracker Xss X11)
+
 
 MESSAGE("====================================================")
 MESSAGE(" IMPORTANT USER ACTION REQUIRED                     ")

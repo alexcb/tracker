@@ -3,10 +3,12 @@
 #include "tracked_tasks_list_model.h"
 #include "human_text.h"
 
-#include <QtGui\qpainter.h>
+#include <QPainter>
 #include <sstream>
 
+#ifdef WIN32
 #include <Windows.h>
+#endif //WIN32
 
 void TrackedTaskItemDelegate::paint( QPainter *painter,
                        const QStyleOptionViewItem &option,

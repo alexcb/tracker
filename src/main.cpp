@@ -10,7 +10,9 @@
 #include <QEvent>
 #include <QMessageBox> //TODO remove
 
+#ifdef WIN32
 #include <Windows.h>
+#endif //WIN32
 
 /////////////////////////////////
 //globals
@@ -28,14 +30,20 @@ UserSettings user_settings;
 
 /////////////////////////////////
 
+#ifdef WIN32
 int CALLBACK WinMain(
   _In_  HINSTANCE hInstance,
   _In_  HINSTANCE hPrevInstance,
   _In_  LPSTR lpCmdLine,
   _In_  int nCmdShow
 )
+#else
+int main(int argc, char** argv, char** env)
+#endif
 {
+#ifdef WIN32
 	int argc = 0;
+#endif
 	QApplication app(argc, NULL);
 
 	tasks.load( getTrackerTaskFile().c_str() );
@@ -58,6 +66,6 @@ int CALLBACK WinMain(
 	task_entry_window->resize(700, 100);
 	task_entry_window->show();
 
-   return app.exec();
+	return app.exec();
 }
 

@@ -7,31 +7,33 @@
 #include <QLineEdit>
 #include <QVBoxLayout>
 #include <qcombobox.h>
-#include "QtCore\qabstractitemmodel.h"
-#include "qabstractitemview.h"
-#include "qtreeview.h"
-#include "qlistview.h"
-#include <QtGui\qpainter.h>
-#include "qitemdelegate.h"
+#include <QAbstractItemModel>
+#include <QAbstractItemView>
+#include <QTreeView>
+#include <QListView>
+#include <QPainter>
+#include <QItemDelegate>
 
 #include <qapplication.h>
 
 #include <sstream>
 
-#include <qcompleter.h>
+#include <QCompleter>
 
 #include <QFileSystemModel>
 
 #include <assert.h>
 
-#include <QtGui\QKeyEvent>
+#include <QKeyEvent>
 
 #include "task_list.h"
 
 #include <time.h>
 
 
+#ifdef WIN32
 #include <Windows.h>
+#endif //WIN32
 
 TrackedTasksListModel::TrackedTasksListModel( UserSettings *user_settings, TaskList *task_list, QObject *parent ) : 
 	QAbstractListModel( parent ),

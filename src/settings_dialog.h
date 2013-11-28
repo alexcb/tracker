@@ -12,7 +12,9 @@ private slots:
 	void saveSettings();
 private:
 	UserSettings *_user_settings;
+#ifdef WIN32
 	QLineEdit *_hotkey;
+#endif //WIN32
 	QLineEdit *_minutes_before_idle;
 	QLineEdit *_hide_tasks_older_than_days;
 };

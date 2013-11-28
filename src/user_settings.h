@@ -1,7 +1,7 @@
 #include <string>
 #include <vector>
 
-#include <QtCore\qobject.h>
+#include <QObject>
 
 class UserSettings : public QObject
 {
