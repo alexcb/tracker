@@ -18,6 +18,8 @@ public:
 	TaskEntryWindow( TaskList *task_list, UserSettings *user_settings, TaskListEditorWindow *editor_window, QWidget *parent = 0 );
 	TaskEntryWidget *_task_entry_widget;
 
+	void promptTask();
+
 	void keyPressEvent( QKeyEvent *event );
 	void closeEvent( QCloseEvent *event );
 

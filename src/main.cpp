@@ -36,7 +36,7 @@ UserSettings user_settings;
 void show_tracker_window()
 {
 	if( task_entry_window )
-		task_entry_window->show();
+		task_entry_window->promptTask();
 }
 
 //returns true if this process needs to shutdown

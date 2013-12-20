@@ -34,6 +34,11 @@ void TaskEntryWindow::keyPressEvent(QKeyEvent *event)
 }
 
 
+void TaskEntryWindow::promptTask()
+{
+	_task_entry_widget->promptTask();
+}
+
 void TaskEntryWindow::closeEvent( QCloseEvent *event )
 {
 	// Hide this window rather than closing it
