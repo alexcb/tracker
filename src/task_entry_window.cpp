@@ -26,12 +26,21 @@ TaskEntryWindow::TaskEntryWindow( TaskList *task_list, UserSettings *user_settin
 
 void TaskEntryWindow::keyPressEvent(QKeyEvent *event)
 {
-    if( event->key() == Qt::Key_Escape ) {
+	if( event->key() == Qt::Key_Escape ) {
 		hide();
 	} else {
 		QMainWindow::keyPressEvent( event );
 	}
 }
+
+
+void TaskEntryWindow::closeEvent( QCloseEvent *event )
+{
+	// Hide this window rather than closing it
+	event->ignore();
+	hide();
+}
+
 
 #ifdef _WIN32
 

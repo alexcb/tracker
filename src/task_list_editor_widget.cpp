@@ -366,20 +366,8 @@ void TaskListEditorWidget::setTaskEditorPosition()
 
 void TaskListEditorWidget::paintEvent(QPaintEvent *)
 {
-	std::cout << "painting" << std::endl;
 	//TODO only call this on resize
 	calcWindowResizeValues();
-
-    //static const QPoint hourHand[3] = {
-    //    QPoint(7, 8),
-    //    QPoint(-7, 8),
-    //    QPoint(0, -40)
-    //};
-    //static const QPoint minuteHand[3] = {
-    //    QPoint(7, 8),
-    //    QPoint(-7, 8),
-    //    QPoint(0, -70)
-    //};
 
     QColor grid_color(0, 0, 0);
 	QColor grid_bg_color(255, 255, 255);
@@ -521,7 +509,7 @@ void TaskListEditorWidget::paintEvent(QPaintEvent *)
 		painter.drawLine( day_column_start_x, _margin + _top_heading_size, day_column_start_x, _margin + _top_heading_size + _grid_height );
 	}
 
-	painter.save();
+	//painter.save();
 }
 
 void TaskListEditorWidget::mouseDoubleClickEvent( QMouseEvent *event )

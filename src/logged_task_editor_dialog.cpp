@@ -34,6 +34,7 @@ LoggedTaskEditorDialog::LoggedTaskEditorDialog( LoggedTask *logged_task, TaskLis
 	layout->addWidget( rename_all_tasks_button );
 
 	setLayout( layout );
+	resize( 500, 200 );
 }
 
 void LoggedTaskEditorDialog::renameSingleLoggedTask()

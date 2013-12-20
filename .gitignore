@@ -1,14 +1,2 @@
-moc_*.cpp
-*.vcxproj*
-tracker.dir
-tracker.opensdf
-tracker.sdf
-tracker.sln
-tracker.suo
-tracker_automoc.cpp
-CMakeCache.txt
-Debug
-Release
-Win32
-cmake_install.cmake
-CMakeFiles
+.*.swp
+build

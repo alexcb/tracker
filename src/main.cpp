@@ -3,12 +3,14 @@
 #include "task_list.h"
 #include "task_entry_window.h"
 #include "user_settings.h"
+#include "inter_process_wakeup.h"
 
 #include <QApplication>
 #include <QMainWindow>
 #include <QWidget>
 #include <QEvent>
 #include <QMessageBox> //TODO remove
+#include <iostream>
 
 #ifdef WIN32
 #include <Windows.h>
@@ -21,14 +23,40 @@
 TaskList tasks;
 
 //the editor window
-TaskListEditorWindow *task_editor_window;
+TaskListEditorWindow *task_editor_window = NULL;
 
 //the task entry window
-TaskEntryWindow *task_entry_window;
+TaskEntryWindow *task_entry_window = NULL;
 
 UserSettings user_settings;
 
 /////////////////////////////////
+
+#ifndef WIN32
+void show_tracker_window()
+{
+	if( task_entry_window )
+		task_entry_window->show();
+}
+
+//returns true if this process needs to shutdown
+bool signalOtherInstanceOrRegisterInstance()
+{
+	std::string fname = getPIDFilePath();
+	pid_t pid = readPID( fname.c_str() );
+	if( signalOtherInstance( pid ) == true ) {
+        //other process was signaled, so this instance should shutdown
+		return true;
+	}
+
+	if( setupWakeupHandler( show_tracker_window ) == false ) {
+        std::cerr << "Parent: Unable to create handler for SIGUSR1" << std::endl;
+    }
+    
+    writePID( fname.c_str() );
+	return false;
+}
+#endif // not WIN32
 
 #ifdef WIN32
 int CALLBACK WinMain(
@@ -43,6 +71,11 @@ int main(int argc, char** argv, char** env)
 {
 #ifdef WIN32
 	int argc = 0;
+#else
+	if( signalOtherInstanceOrRegisterInstance() ) {
+		// Other process is running and has been signaled
+		return 0;
+	}
 #endif
 	QApplication app(argc, NULL);
 
