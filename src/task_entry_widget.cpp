@@ -131,6 +131,8 @@ void TaskEntryWidget::promptTask()
     //Qt::WindowFlags eFlags = windowFlags ();
     //eFlags |= Qt::WindowStaysOnTopHint;
     //setWindowFlags(eFlags);
+
+	_task_edit->setFocus();
 }
 
 
