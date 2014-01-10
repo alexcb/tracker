@@ -230,13 +230,16 @@ std::vector<TaskSearchResult> TaskList::findTasks( const char *search, const cha
 	std::vector<TaskSearchResult> task_search_results;
 
 	int number_of_sub_tasks_to_search = numberOfStringMatches(search, delim) + 1;
+	// Search the first two by default
+	if( number_of_sub_tasks_to_search == 1 )
+		number_of_sub_tasks_to_search++;
 
 	for( int i = 0; i < _tasks.size(); i++ ) {
 		if( _tasks[i]->last_logged_time > min_task_age ) {
 			const char *task_name = _tasks[i]->name.c_str();
 			const char *task_name_end = findNthString( task_name, delim, number_of_sub_tasks_to_search );
 			int len_to_search = task_name_end ? task_name_end - task_name : strlen(task_name);
-			const char *matched_s = strstr(task_name, search);
+			const char *matched_s = strstri(task_name, search);
 
 			if( matched_s && (matched_s - task_name) < len_to_search ) {
 				std::string trimed_task(task_name, task_name + len_to_search);
