@@ -165,7 +165,7 @@ void TaskEntryWidget::timerUpdate()
 	if( ms_idle >= idle_time_ms ) {
 		//detected idle
 		if( _went_idle_at == 0 ) {
-			_went_idle_at = time(NULL);
+			_went_idle_at = time(NULL) - ms_idle/1000;
 			//_displayed_idle_return_window = false;
 		}
 	} else {
