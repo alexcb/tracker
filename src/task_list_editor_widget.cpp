@@ -47,6 +47,28 @@ inline QString seconds_to_hours( int seconds )
 	return QString( oss.str().c_str() );
 }
 
+//FIXME -- the line wrapping in this function seems a little buggy
+QString wrapQString( QString s, const int num_char_per_line = 15 )
+{
+	int found_space = 0;
+	int chars_on_line = 0;
+	for( int i = 0; i < s.length(); i++ ) {
+		if( s[i] == ' ' ) {
+			if( found_space == 0 || chars_on_line < num_char_per_line ) {
+				found_space = i;
+			}
+
+			if( chars_on_line > num_char_per_line ) {
+				s[found_space] = '\n';
+				found_space = 0;
+				chars_on_line = 0;
+			}
+		}
+		chars_on_line++;
+	}
+	return s;
+}
+
 //t - epoch based UTC time
 //returns seconds since midnight in local time
 inline time_t getSecondsSinceLocalTimeMidnight( time_t t )
@@ -62,7 +84,7 @@ TaskListEditorWidget::TaskListEditorWidget( TaskList *tasks, UserSettings *user_
 	_top_heading_size( 40 ),
 	_day_start_time( 0 ),
 	_day_end_time( 60*60*24 - 1 ),
-	_time_column_width( 50 ),
+	_time_column_width( 65 ),
 	_selected_boundary_task( NULL ),
 	_selected_task( NULL ),
 	_selected_visible_task( NULL ),
@@ -482,6 +504,7 @@ void TaskListEditorWidget::paintEvent(QPaintEvent *)
 				//display task label
 				if( task_height > 40 ) {
 					QString task_label = visible_task->task->task->name.c_str();
+					task_label = wrapQString(task_label);
 					task_label += "\n" + seconds_to_hours( visible_task->task_seconds );
 					painter.drawText( day_column_start_x + 5, start_y, _day_column_width - 10, task_height, Qt::AlignCenter, task_label );
 				}

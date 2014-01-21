@@ -92,7 +92,7 @@ int main(int argc, char** argv, char** env)
 	}
 
 	//task_editor->setTaskChangedCallback( task_changed, NULL );
-	task_editor_window->resize(900, 900);
+	task_editor_window->resize(1400, 900);
 
 	//create task entry GUI
 	task_entry_window = new TaskEntryWindow( &tasks, &user_settings, task_editor_window );
